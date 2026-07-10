@@ -39,4 +39,7 @@ src/
 ├── lib/
 │ └── utils.ts → helpers (formatação de moeda, data, etc.)
 └── types/
-└── index.ts → tipos TypeScript (Transaction, Card, etc.)
+└── index.ts → tipos TypeScript (Transaction, Card, etc.) (CardData.variant("primary" | "secondary") allows you to visually differentiate the blue card from the white card without duplicating the type.
+Transaction.type("income" | "expense") is used to decide whether the value appears green or red, and for the plus/minus sign.
+Transaction.icon is a union of fixed strings (not loose strings) — this forces you to only use icons that you will actually map in the component, avoiding silent typing errors.
+ExpenseCategory.color stores the pre-defined color (referencing the variables in globals.css), so the chart component doesn't need to have hardcoded "which color for which category" logic.)
