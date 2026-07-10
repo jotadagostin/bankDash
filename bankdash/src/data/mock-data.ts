@@ -75,19 +75,19 @@ export const contacts: Contact[] = [
     id: "c1",
     name: "Livia Bator",
     role: "CEO",
-    avatarUrl: "/avatars/livia.jpg",
+    avatarUrl: "https://i.pravatar.cc/150?img=5",
   },
   {
     id: "c2",
     name: "Randy Press",
     role: "Director",
-    avatarUrl: "/avatars/randy.jpg",
+    avatarUrl: "https://i.pravatar.cc/150?img=12",
   },
   {
     id: "c3",
     name: "Workman",
     role: "Designer",
-    avatarUrl: "/avatars/workman.jpg",
+    avatarUrl: "https://i.pravatar.cc/150?img=33",
   },
 ];
 
