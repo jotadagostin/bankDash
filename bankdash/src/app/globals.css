@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ===== Cores principais ===== */
+  --color-primary: #396aff;
+  --color-primary-light: #ecf2ff;
+
+  /* ===== Gradiente dos cards (My Cards) ===== */
+  --color-card-gradient-start: #4a3aff;
+  --color-card-gradient-end: #7f5aff;
+
+  /* ===== Backgrounds ===== */
+  --color-background: #f5f7fa;
+  --color-surface: #ffffff;
+
+  /* ===== Texto ===== */
+  --color-text-primary: #232323;
+  --color-text-secondary: #718ebf;
+  --color-text-muted: #b1b1b1;
+
+  /* ===== Status (Weekly Activity) ===== */
+  --color-deposit: #16dbcc;
+  --color-withdraw: #fe5c73;
+
+  /* ===== Expense Statistics (donut) ===== */
+  --color-entertainment: #2d3a8c;
+  --color-bill-expense: #ff8a65;
+  --color-investment: #b620e0;
+  --color-others: #396aff;
+
+  /* ===== Tipografia ===== */
+  --font-sans: var(--font-inter);
+
+  /* ===== Border radius consistente ===== */
+  --radius-card: 1rem;
+  --radius-input: 0.75rem;
+
+  /* ===== Sombra padrão dos cards ===== */
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+}
