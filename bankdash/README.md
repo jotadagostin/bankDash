@@ -37,7 +37,8 @@ src/
 ├── data/
 │ └── mock-data.ts → dados fake estruturados (transactions, cards, etc.)
 ├── lib/
-│ └── utils.ts → helpers (formatação de moeda, data, etc.)
+│ └── utils.ts → helpers (formatação de moeda, data, etc.) (formatCurrency is for transactions — it always shows the sign (+/-), because in the design this visually indicates inflow/outflow of money
+formatBalance is for card balance — there is never a sign, it is just the formatted absolute value ($5,756))
 └── types/
 └── index.ts → tipos TypeScript (Transaction, Card, etc.) (CardData.variant("primary" | "secondary") allows you to visually differentiate the blue card from the white card without duplicating the type.
 Transaction.type("income" | "expense") is used to decide whether the value appears green or red, and for the plus/minus sign.
