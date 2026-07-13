@@ -5,7 +5,6 @@ export function Header() {
   return (
     <header className="flex items-center justify-between px-8 py-6 bg-background">
       <div>
-        <p className="text-xs text-text-secondary mb-1">Main Dashboard</p>
         <h1 className="text-2xl font-bold text-text-primary">Overview</h1>
       </div>
 
