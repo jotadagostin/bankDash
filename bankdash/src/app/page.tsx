@@ -1,3 +1,4 @@
+import { ExpenseStatistics } from "@/components/dashboard/ExpenseStatistics";
 import { MyCards } from "@/components/dashboard/MyCards";
 import { RecentTransactions } from "@/components/dashboard/RecentTransaction";
 import { Sidebar } from "@/components/dashboard/Sidebar";
@@ -16,7 +17,10 @@ export default function Home() {
             <MyCards />
             <WeeklyActivity />
           </div>
-          <RecentTransactions />
+          <div className="flex flex-col gap-6">
+            <RecentTransactions />
+            <ExpenseStatistics />
+          </div>
         </main>
       </div>
     </div>
