@@ -1,6 +1,5 @@
 import { cards } from "@/data/mock-data";
 import { formatBalance } from "@/lib/utils";
-import { Wifi } from "lucide-react";
 import Image from "next/image";
 
 export function MyCards() {
@@ -42,11 +41,7 @@ export function MyCards() {
                     {formatBalance(card.balance)}
                   </p>
                 </div>
-                {/* <Wifi
-                  className={`w-6 h-6 rotate-90 ${
-                    isPrimary ? "text-white/80" : "text-text-primary/60"
-                  }`}
-                /> */}
+
                 <Image
                   src={isPrimary ? "/chip-white.svg" : "/chip-dark.svg"}
                   alt="Card chip"
