@@ -1,5 +1,6 @@
 import { ExpenseStatistics } from "@/components/dashboard/ExpenseStatistics";
 import { MyCards } from "@/components/dashboard/MyCards";
+import { QuickTransfer } from "@/components/dashboard/QuickTransfer";
 import { RecentTransactions } from "@/components/dashboard/RecentTransaction";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { WeeklyActivity } from "@/components/dashboard/WeeklyActivity";
@@ -20,6 +21,7 @@ export default function Home() {
           <div className="flex flex-col gap-6">
             <RecentTransactions />
             <ExpenseStatistics />
+            <QuickTransfer />
           </div>
         </main>
       </div>
