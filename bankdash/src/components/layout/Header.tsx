@@ -3,7 +3,7 @@ import { Search, Settings, Bell } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between px-8 py-6 bg-background">
+    <header className="flex items-center justify-between px-8 py-6 bg-surface">
       <div>
         <h1 className="text-2xl font-bold text-text-primary">Overview</h1>
       </div>
@@ -21,7 +21,7 @@ export function Header() {
         <button
           type="button"
           aria-label="Settings"
-          className="w-11 h-11 rounded-full bg-surface flex items-center justify-center text-text-secondary hover:text-primary transition-colors"
+          className="cursor-pointer w-11 h-11 rounded-full bg-surface flex items-center justify-center text-text-secondary hover:text-primary transition-colors"
         >
           <Settings className="w-5 h-5" />
         </button>
@@ -29,9 +29,9 @@ export function Header() {
         <button
           type="button"
           aria-label="Notifications"
-          className="relative w-11 h-11 rounded-full bg-surface flex items-center justify-center text-text-secondary hover:text-primary transition-colors"
+          className="cursor-pointer relative w-11 h-11 rounded-full bg-surface flex items-center justify-center text-text-secondary hover:text-primary transition-colors"
         >
-          <Bell className="w-5 h-5" />
+          <Bell className="w-5 h-5 cursor-pointer" />
           <span className="absolute top-2.5 right-3 w-2 h-2 rounded-full bg-withdraw" />
         </button>
 
@@ -40,7 +40,7 @@ export function Header() {
             src="https://i.pravatar.cc/150?img=47"
             alt="User avatar"
             fill
-            className="object-cover"
+            className="object-cover cursor-pointer"
           />
         </div>
       </div>
