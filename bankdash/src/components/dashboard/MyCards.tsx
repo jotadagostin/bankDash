@@ -106,7 +106,7 @@ export function MyCards() {
         </button>
       </div>
 
-      <div className="bg--color-background rounded-card p-6 ">
+      <div className="bg--surface rounded-card p-6 ">
         <div className="flex gap-4 overflow-x-auto">
           {cards.map((card) => {
             const isPrimary = card.variant === "primary";

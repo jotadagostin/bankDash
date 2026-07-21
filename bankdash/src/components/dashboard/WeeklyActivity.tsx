@@ -15,7 +15,9 @@ import {
 export function WeeklyActivity() {
   return (
     <div>
-      <h2 className="font-bold text-text-primary">Weekly Activity</h2>
+      <h2 className="text-[22px] font-semibold text-heading mb-4">
+        Weekly Activity
+      </h2>
 
       <div className="bg-surface rounded-card p-6 shadow-card">
         <ResponsiveContainer width="100%" height={280}>

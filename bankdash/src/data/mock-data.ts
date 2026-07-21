@@ -89,6 +89,12 @@ export const contacts: Contact[] = [
     role: "Designer",
     avatarUrl: "https://i.pravatar.cc/150?img=33",
   },
+  {
+    id: "c4",
+    name: "Paula",
+    role: "Front-end",
+    avatarUrl: "https://i.pravatar.cc/150?img=34",
+  },
 ];
 
 export const balanceHistory: BalanceHistoryPoint[] = [

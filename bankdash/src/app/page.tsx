@@ -14,19 +14,24 @@ export default function Home() {
       <div className="flex-1">
         <Header />
         <main className="p-6 max-w-7xl mx-auto flex flex-col gap-6">
-          {/* Linha 1: My Cards / Weekly Activity (2/3) + Recent Transaction / Expense Statistics (1/3) */}
+          {/* Grid único: cada linha alinha My Cards/Weekly Activity com Recent Transaction/Expense Statistics */}
           <div className="grid grid-cols-3 gap-6">
-            <div className="col-span-2 flex flex-col gap-6">
+            <div className="col-span-2">
               <MyCards />
+            </div>
+            <div>
+              <RecentTransactions />
+            </div>
+
+            <div className="col-span-2">
               <WeeklyActivity />
             </div>
-            <div className="flex flex-col gap-6">
-              <RecentTransactions />
+            <div>
               <ExpenseStatistics />
             </div>
           </div>
 
-          {/* Linha 2: Quick Transfer + Balance History (proporção 1:1, grid próprio) */}
+          {/* Quick Transfer + Balance History (proporção 1:1, grid próprio) */}
           <div className="grid grid-cols-2 gap-6">
             <QuickTransfer />
             <BalanceHistory />

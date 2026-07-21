@@ -17,10 +17,12 @@ export function QuickTransfer() {
 
   return (
     <div>
-      <h2 className="font-bold text-text-primary mb-4">Quick Transfer</h2>
+      <h2 className="text-[22px] font-semibold text-heading mb-4">
+        Quick Transfer
+      </h2>
 
       <div className="bg-surface rounded-card p-6 shadow-card">
-        <div className="flex items-center gap-6 mb-6">
+        <div className="flex items-center justify-between gap-4 mb-6">
           {contacts.map((contact) => {
             const isSelected = contact.id === selectedContactId;
 

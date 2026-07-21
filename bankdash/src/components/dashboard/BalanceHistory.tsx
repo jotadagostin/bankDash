@@ -14,7 +14,9 @@ import {
 export function BalanceHistory() {
   return (
     <div>
-      <h2 className="font-bold text-text-primary mb-4">Balance History</h2>
+      <h2 className="text-[22px] font-semibold text-heading mb-4">
+        Balance History
+      </h2>
 
       <div className="bg-surface rounded-card p-6 shadow-card">
         <ResponsiveContainer width="100%" height={260}>
