@@ -106,3 +106,17 @@ export const balanceHistory: BalanceHistoryPoint[] = [
   { month: "Dec", balance: 550 },
   { month: "Jan", balance: 750 },
 ];
+
+export interface MonthlyExpense {
+  month: string;
+  value: number;
+}
+
+export const monthlyExpense: MonthlyExpense[] = [
+  { month: "Aug", value: 1800 },
+  { month: "Sep", value: 2100 },
+  { month: "Oct", value: 1600 },
+  { month: "Nov", value: 2400 },
+  { month: "Dec", value: 4600 },
+  { month: "Jan", value: 2000 },
+];

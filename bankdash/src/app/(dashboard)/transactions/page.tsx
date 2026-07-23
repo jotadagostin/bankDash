@@ -1,5 +1,3 @@
-"use client";
-
 import { MyCards } from "@/components/dashboard/MyCards";
 import { ExpenseChart } from "@/components/transactions/ExpenseChart";
 import { TransactionTable } from "@/components/transactions/TransactionsTable";
