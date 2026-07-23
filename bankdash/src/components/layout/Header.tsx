@@ -2,10 +2,11 @@ import Image from "next/image";
 import { Search, Settings, Bell, Menu } from "lucide-react";
 
 interface HeaderProps {
+  title: string;
   onMenuClick: () => void;
 }
 
-export function Header({ onMenuClick }: HeaderProps) {
+export function Header({ title, onMenuClick }: HeaderProps) {
   return (
     <header className="bg-background">
       <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-6">
@@ -14,10 +15,10 @@ export function Header({ onMenuClick }: HeaderProps) {
             <Menu className="w-6 h-6" />
           </button>
           <div className="hidden md:block">
-            <h1 className="text-2xl font-bold text-text-primary">Overview</h1>
+            <h1 className="text-2xl font-bold text-text-primary">{title}</h1>
           </div>
           <h1 className="md:hidden text-lg font-bold text-text-primary">
-            Overview
+            {title}
           </h1>
         </div>
 
@@ -32,18 +33,18 @@ export function Header({ onMenuClick }: HeaderProps) {
           </div>
 
           <button className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface flex items-center justify-center text-text-secondary">
-            <Settings className="w-5 h-5" />
+            <Settings className="w-5 h-5 cursor-pointer" />
           </button>
           <button className="relative w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface flex items-center justify-center text-text-secondary">
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-2.5 right-3 w-2 h-2 rounded-full bg-withdraw" />
+            <Bell className="w-5 h-5 cursor-pointer" />
+            <span className="absolute top-2.5 right-3 w-2 h-2 rounded-full bg-withdraw cursor-pointer" />
           </button>
           <div className="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden relative">
             <Image
               src="https://i.pravatar.cc/150?img=47"
               alt="User avatar"
               fill
-              className="object-cover"
+              className="object-cover cursor-pointer"
             />
           </div>
         </div>

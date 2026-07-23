@@ -7,7 +7,6 @@ import { ExpenseStatistics } from "@/components/dashboard/ExpenseStatistics";
 import { QuickTransfer } from "@/components/dashboard/QuickTransfer";
 import { BalanceHistory } from "@/components/dashboard/BalanceHistory";
 import { RecentTransactions } from "@/components/dashboard/RecentTransaction";
-// import { Sidebar } from "@/components/dashboard/Sidebar";
 import { useState } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 
@@ -18,7 +17,7 @@ export default function Home() {
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex-1 min-w-0">
-        <Header onMenuClick={() => setIsSidebarOpen(true)} />
+        <Header title="Overview" onMenuClick={() => setIsSidebarOpen(true)} />
         <main className="p-4 md:p-6 max-w-7xl mx-auto flex flex-col gap-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
