@@ -1,6 +1,6 @@
 import { MyCards } from "@/components/dashboard/MyCards";
 import { ExpenseChart } from "@/components/transactions/ExpenseChart";
-import { TransactionTable } from "@/components/transactions/TransactionsTable";
+import { TransactionsTable } from "@/components/transactions/TransactionsTable";
 
 export default function TransactionsPage() {
   return (
@@ -14,7 +14,7 @@ export default function TransactionsPage() {
         </div>
       </div>
 
-      <TransactionTable />
+      <TransactionsTable />
     </>
   );
 }

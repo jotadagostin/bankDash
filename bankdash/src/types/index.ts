@@ -39,3 +39,14 @@ export interface BalanceHistoryPoint {
   month: string;
   balance: number;
 }
+
+export interface DetailedTransaction {
+  id: string;
+  description: string;
+  transactionId: string;
+  category: string;
+  cardLast4: string;
+  date: string;
+  amount: number;
+  direction: "income" | "expense";
+}

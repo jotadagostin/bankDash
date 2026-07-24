@@ -14,7 +14,7 @@ export function ExpenseChart() {
       </div>
 
       <div className="bg-surface rounded-card p-6 shadow-card">
-        <p bg-surface rounded-card p-6 shadow-card>
+        <p className="bg-surface rounded-card p-6 shadow-card">
           ${total.toLocaleString("es-US")}
         </p>
 
