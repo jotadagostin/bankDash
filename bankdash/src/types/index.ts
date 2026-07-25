@@ -49,4 +49,23 @@ export interface DetailedTransaction {
   date: string;
   amount: number;
   direction: "income" | "expense";
+  status?: "Pending" | "Completed";
+}
+
+export interface SummaryCardData {
+  label: string;
+  value: number;
+}
+
+export interface Invoice {
+  id: string;
+  name: string;
+  timeAgo: string;
+  amount: number;
+}
+
+export interface DebidCreditPoint {
+  day: string;
+  debit: number;
+  credit: number;
 }

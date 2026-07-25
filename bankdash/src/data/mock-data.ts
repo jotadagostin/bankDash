@@ -6,6 +6,9 @@ import type {
   Contact,
   BalanceHistoryPoint,
   DetailedTransaction,
+  SummaryCardData,
+  Invoice,
+  DebidCreditPoint,
 } from "@/types";
 
 export const cards: CardData[] = [
@@ -132,6 +135,7 @@ export const detailedTransactions: DetailedTransaction[] = [
     date: "28 Jan, 12:30 AM",
     amount: -2500,
     direction: "expense",
+    status: "Pending",
   },
   {
     id: "dt2",
@@ -152,6 +156,7 @@ export const detailedTransactions: DetailedTransaction[] = [
     date: "20 Jan, 10:40 PM",
     amount: -150,
     direction: "expense",
+    status: "Completed",
   },
   {
     id: "dt4",
@@ -172,6 +177,7 @@ export const detailedTransactions: DetailedTransaction[] = [
     date: "14 Jan, 10:40 PM",
     amount: 840,
     direction: "income",
+    status: "Completed",
   },
   {
     id: "dt6",
@@ -273,4 +279,28 @@ export const detailedTransactions: DetailedTransaction[] = [
     amount: 2000,
     direction: "income",
   },
+];
+
+export const summaryCards: SummaryCardData[] = [
+  { label: "My Balance", value: 12750 },
+  { label: "Income", value: 5600 },
+  { label: "Expense", value: 3460 },
+  { label: "Total Saving", value: 7920 },
+];
+
+export const invoices: Invoice[] = [
+  { id: "inv1", name: "Apple Store", timeAgo: "5h ago", amount: 450 },
+  { id: "inv2", name: "Michael", timeAgo: "2 days ago", amount: 160 },
+  { id: "inv3", name: "Playstation", timeAgo: "5 days ago", amount: 1085 },
+  { id: "inv4", name: "William", timeAgo: "10 days ago", amount: 90 },
+];
+
+export const debitCreditOverview: DebidCreditPoint[] = [
+  { day: "Sat", debit: 800, credit: 550 },
+  { day: "Sun", debit: 250, credit: 700 },
+  { day: "Mon", debit: 200, credit: 350 },
+  { day: "Tue", debit: 700, credit: 220 },
+  { day: "Wed", debit: 320, credit: 550 },
+  { day: "Thu", debit: 480, credit: 300 },
+  { day: "Fri", debit: 750, credit: 480 },
 ];
