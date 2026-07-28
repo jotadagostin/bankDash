@@ -170,7 +170,7 @@ export const detailedTransactions: DetailedTransaction[] = [
   },
   {
     id: "dt5",
-    description: "Emilly",
+    description: "Emilly Willson",
     transactionId: "#12548796",
     category: "Transfer",
     cardLast4: "1234",
