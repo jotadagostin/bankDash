@@ -24,7 +24,7 @@ export function InvoicesSent() {
         </h2>
         <button
           type="button"
-          className="text-sm font-medium text-heading hover:text-primary transition-colors"
+          className="text-sm font-medium text-heading hover:text-primary transition-colors cursor-pointer"
         >
           See All
         </button>
