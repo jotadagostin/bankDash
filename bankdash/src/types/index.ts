@@ -69,3 +69,29 @@ export interface DebidCreditPoint {
   debit: number;
   credit: number;
 }
+
+export interface InvestmentSummary {
+  label: string;
+  value: string;
+}
+
+export interface YearlyDataPoint {
+  year: string;
+  value: number;
+}
+
+export interface Investment {
+  id: string;
+  name: string;
+  category: string;
+  value: number;
+  returnPercent: number;
+}
+
+export interface TrendingStock {
+  id: string;
+  slNo: string;
+  name: string;
+  price: number;
+  returnPercent: number;
+}

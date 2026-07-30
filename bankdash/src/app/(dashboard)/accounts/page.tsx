@@ -4,7 +4,7 @@ import { LastTransaction } from "@/components/accounts/LastTransactions";
 import { MyCard } from "@/components/accounts/MyCard";
 import { SummaryCards } from "@/components/accounts/SummaryCards";
 
-export default function Accounts() {
+export default function AccountsPage() {
   return (
     <div className="flex flex-col gap-6">
       <SummaryCards />

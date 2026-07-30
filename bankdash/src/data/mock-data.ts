@@ -9,6 +9,10 @@ import type {
   SummaryCardData,
   Invoice,
   DebidCreditPoint,
+  InvestmentSummary,
+  YearlyDataPoint,
+  Investment,
+  TrendingStock,
 } from "@/types";
 
 export const cards: CardData[] = [
@@ -303,4 +307,60 @@ export const debitCreditOverview: DebidCreditPoint[] = [
   { day: "Wed", debit: 320, credit: 550 },
   { day: "Thu", debit: 480, credit: 300 },
   { day: "Fri", debit: 750, credit: 480 },
+];
+
+export const investmentSummary: InvestmentSummary[] = [
+  { label: "Total Invested Amount", value: "$150,000" },
+  { label: "Number of Investments", value: "1,250" },
+  { label: "Rate of Return", value: "+5.80%" },
+];
+
+export const yearlyInvestment: YearlyDataPoint[] = [
+  { year: "2016", value: 5000 },
+  { year: "2017", value: 22000 },
+  { year: "2018", value: 15000 },
+  { year: "2019", value: 38000 },
+  { year: "2020", value: 18000 },
+  { year: "2021", value: 24000 },
+];
+
+export const monthlyRevenue: YearlyDataPoint[] = [
+  { year: "2016", value: 8000 },
+  { year: "2017", value: 26000 },
+  { year: "2018", value: 20000 },
+  { year: "2019", value: 30000 },
+  { year: "2020", value: 22000 },
+  { year: "2021", value: 34000 },
+];
+
+export const myInvestments: Investment[] = [
+  {
+    id: "inv1",
+    name: "Apple Store",
+    category: "E-commerce, Marketplace",
+    value: 54000,
+    returnPercent: 16,
+  },
+  {
+    id: "inv2",
+    name: "Samsung Mobile",
+    category: "E-commerce, Marketplace",
+    value: 25300,
+    returnPercent: -4,
+  },
+  {
+    id: "inv3",
+    name: "Tesla Motors",
+    category: "Electric Vehicles",
+    value: 8200,
+    returnPercent: 25,
+  },
+];
+
+export const trendingStocks: TrendingStock[] = [
+  { id: "ts1", slNo: "01.", name: "Trivago", price: 520, returnPercent: 5 },
+  { id: "ts2", slNo: "02.", name: "Canon", price: 480, returnPercent: 10 },
+  { id: "ts3", slNo: "03.", name: "Uber Food", price: 350, returnPercent: -3 },
+  { id: "ts4", slNo: "04.", name: "Nokia", price: 940, returnPercent: 2 },
+  { id: "ts5", slNo: "05.", name: "Tiktok", price: 670, returnPercent: -12 },
 ];
