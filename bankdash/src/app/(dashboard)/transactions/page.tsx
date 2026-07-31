@@ -1,6 +1,7 @@
 import { MyCards } from "@/components/dashboard/MyCards";
 import { ExpenseChart } from "@/components/transactions/ExpenseChart";
 import { TransactionsTable } from "@/components/transactions/TransactionsTable";
+import { Suspense } from "react";
 
 export default function TransactionsPage() {
   return (
@@ -14,7 +15,13 @@ export default function TransactionsPage() {
         </div>
       </div>
 
-      <TransactionsTable />
+      <Suspense
+        fallback={
+          <div className="h-96 bg-surface rounded-card shadow-card animate-pulse" />
+        }
+      >
+        <TransactionsTable />
+      </Suspense>
     </>
   );
 }
