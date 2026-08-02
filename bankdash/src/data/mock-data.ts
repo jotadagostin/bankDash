@@ -364,3 +364,72 @@ export const trendingStocks: TrendingStock[] = [
   { id: "ts4", slNo: "04.", name: "Nokia", price: 940, returnPercent: 2 },
   { id: "ts5", slNo: "05.", name: "Tiktok", price: 670, returnPercent: -12 },
 ];
+
+export const cardExpenseStatistics: ExpenseCategory[] = [
+  { label: "DBL Bank", value: 25, color: "#396AFF" },
+  { label: "BRC Bank", value: 25, color: "#FE5C73" },
+  { label: "ABM Bank", value: 25, color: "#16DBCC" },
+  { label: "MCP Bank", value: 25, color: "#FFA800" },
+];
+
+export interface CreditCardListItem {
+  id: string;
+  type: string;
+  bank: string;
+  cardNumber: string;
+  cardholderName: string;
+}
+
+export const creditCardList: CreditCardListItem[] = [
+  {
+    id: "cc1",
+    type: "Secondary",
+    bank: "DBL Bank",
+    cardNumber: "**** **** 5600",
+    cardholderName: "William",
+  },
+  {
+    id: "cc2",
+    type: "Secondary",
+    bank: "BRC Bank",
+    cardNumber: "**** **** 4300",
+    cardholderName: "Michel",
+  },
+  {
+    id: "cc3",
+    type: "Secondary",
+    bank: "ABM Bank",
+    cardNumber: "**** **** 7560",
+    cardholderName: "Edward",
+  },
+];
+
+export interface CardSetting {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export const cardSettings: CardSetting[] = [
+  { id: "cs1", title: "Block Card", description: "Instantly block your card" },
+  {
+    id: "cs2",
+    title: "Change Pic Code",
+    description: "Withdraw without any card",
+  },
+  {
+    id: "cs3",
+    title: "Add to Google Pay",
+    description: "Withdraw without any card",
+  },
+  {
+    id: "cs4",
+    title: "Add to Apple Pay",
+    description: "Withdraw without any card",
+  },
+  {
+    id: "cs5",
+    title: "Add to Apple Store",
+    description: "Withdraw without any card",
+  },
+];
