@@ -7,7 +7,11 @@ import { useState } from "react";
 
 const pageTitles: Record<string, string> = {
   "/": "Overview",
-  transactions: "Transactions",
+  "/transactions": "Transactions",
+  "/accounts": "Accounts",
+  "/investments": "Investments",
+  "/credit-cards": "Credit Cards",
+  "/loans": "Loans",
 };
 
 export default function DashboardLayout({

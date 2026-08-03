@@ -95,3 +95,18 @@ export interface TrendingStock {
   price: number;
   returnPercent: number;
 }
+
+export interface LoanSummary {
+  label: string;
+  value: string;
+}
+
+export interface LoanRecord {
+  id: string;
+  slNo: string;
+  loanMoney: number;
+  leftToRepay: number;
+  duration: string;
+  interestRate: string;
+  installment: string;
+}
