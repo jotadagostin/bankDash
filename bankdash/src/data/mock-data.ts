@@ -15,6 +15,8 @@ import type {
   TrendingStock,
   LoanSummary,
   LoanRecord,
+  ServiceHighlight,
+  BankService,
 } from "@/types";
 
 export const cards: CardData[] = [
@@ -515,5 +517,44 @@ export const loanRecords: LoanRecord[] = [
     duration: "3 Months",
     interestRate: "12%",
     installment: "$900 / month",
+  },
+];
+
+export const serviceHighlights: ServiceHighlight[] = [
+  { title: "Life Insurance", description: "Unlimited protection" },
+  { title: "Shopping", description: "Buy. Think. Grow" },
+  { title: "Safety", description: "We are your allies" },
+];
+
+export const bankServices: BankService[] = [
+  {
+    id: "bs1",
+    name: "Business loans",
+    description: "It is a long established",
+  },
+  {
+    id: "bs2",
+    name: "Checking accounts",
+    description: "It is a long established",
+  },
+  {
+    id: "bs3",
+    name: "Savings accounts",
+    description: "It is a long established",
+  },
+  {
+    id: "bs4",
+    name: "Debit and credit cards",
+    description: "It is a long established",
+  },
+  {
+    id: "bs5",
+    name: "Life Insurance",
+    description: "It is a long established",
+  },
+  {
+    id: "bs6",
+    name: "Business loans",
+    description: "It is a long established",
   },
 ];

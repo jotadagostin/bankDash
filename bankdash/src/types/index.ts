@@ -110,3 +110,14 @@ export interface LoanRecord {
   interestRate: string;
   installment: string;
 }
+
+export interface ServiceHighlight {
+  title: string;
+  description: string;
+}
+
+export interface BankService {
+  id: string;
+  name: string;
+  description: string;
+}

@@ -52,7 +52,7 @@ export function ActiveLoansTable() {
                   <td className="px-4 py-4">
                     <button
                       type="button"
-                      className={`text-xs font-medium border rounded-full px-4 py-1.5 transition-colors ${
+                      className={`text-xs font-medium border cursor-pointer rounded-full px-4 py-1.5 transition-colors ${
                         index === 0
                           ? "text-primary border-primary hover:bg-primary-light"
                           : "text-text-secondary border-text-muted/40 hover:bg-primary-light hover:text-primary hover:border-primary"
