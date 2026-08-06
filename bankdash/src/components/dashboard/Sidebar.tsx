@@ -23,7 +23,7 @@ const navItems = [
   { label: "Credit Cards", href: "/credit-cards", icon: CreditCard },
   { label: "Loans", href: "/loans", icon: Wallet },
   { label: "Services", href: "/services", icon: Wrench },
-  { label: "My Privileges", href: "/privileges", icon: Shield },
+  // { label: "My Privileges", href: "/privileges", icon: Shield },
   { label: "Setting", href: "/settings", icon: Settings },
 ];
 
