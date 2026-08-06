@@ -13,18 +13,17 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
-export function SettingClient() {
+export function SettingsClient() {
   const [activeTab, setActiveTab] = useState<TabId>("profile");
 
   return (
     <div className="rounded-2xl bg-white p-6 shadow-sm">
-      {/* Content for the active tab */}
-      <div>
+      <div className="mb-6 flex space-x-6 border-b border-gray-100">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`relative pb-3 text-sm font-medium transition-colors ${
+            className={`relative shrink-0 pb-3 cursor-pointer text-sm font-medium transition-colors ${
               activeTab === tab.id
                 ? "text-blue-600"
                 : "text-gray-400 hover:text-gray-600"
