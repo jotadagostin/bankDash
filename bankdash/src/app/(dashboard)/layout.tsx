@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const pageTitles: Record<string, string> = {
-  "/": "Overview",
+  "/dashboard": "Overview",
   "/transactions": "Transactions",
   "/accounts": "Accounts",
   "/investments": "Investments",
