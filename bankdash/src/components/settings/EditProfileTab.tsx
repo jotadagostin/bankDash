@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Pencil } from "lucide-react";
 import { Field } from "./Field";
 
 export function EditProfileTab() {
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [form, setForm] = useState({
     name: "Charlene Reed",
     username: "Charlene Reed",
@@ -21,13 +24,42 @@ export function EditProfileTab() {
   const set = (key: keyof typeof form) => (value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
 
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // preview local apenas — não persiste (sem backend ainda)
+    const url = URL.createObjectURL(file);
+    setAvatarUrl(url);
+  }
+
   return (
     <div className="flex flex-col gap-6 md:flex-row md:gap-10">
       <div className="relative h-20 w-20 shrink-0">
-        <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-100" />
-        <button className="absolute bottom-0 right-0 rounded-full bg-blue-600 p-1.5 text-white">
+        <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-100">
+          {avatarUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={avatarUrl}
+              alt="Avatar"
+              className="h-full w-full object-cover"
+            />
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="absolute bottom-0 cursor-pointer right-0 rounded-full bg-blue-600 p-1.5 text-white"
+        >
           <Pencil size={12} />
         </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
       </div>
 
       <div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
@@ -64,7 +96,7 @@ export function EditProfileTab() {
         <Field label="Country" value={form.country} onChange={set("country")} />
 
         <div className="col-span-full flex justify-end">
-          <button className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
+          <button className="rounded-lg cursor-pointer bg-blue-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
             Save
           </button>
         </div>
