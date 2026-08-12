@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
-export function LoginForm() {
+export function SignUpForm() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [remember, setRemember] = useState(false);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: wire up to auth once backend is in place
+    // TODO: conectar ao endpoint de signup quando o backend estiver pronto
   }
 
   return (
@@ -21,7 +21,7 @@ export function LoginForm() {
       <div className="mx-auto w-full max-w-sm">
         <div className="mb-10 flex items-center gap-2">
           <Image
-            src="/logo-form.png"
+            src="/logo.png"
             alt="BankDash"
             width={32}
             height={32}
@@ -33,13 +33,34 @@ export function LoginForm() {
         </div>
 
         <h1 className="text-2xl font-semibold text-(--color-heading)">
-          Welcome back
+          Create your account
         </h1>
         <p className="mt-1.5 text-sm text-(--color-text-secondary)">
-          Sign in to continue to your dashboard.
+          Start managing your finances in one place.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="name"
+              className="text-sm text-(--color-text-secondary)"
+            >
+              Full name
+            </label>
+            <div className="flex items-center gap-2 rounded-(--radius-input) border border-gray-200 px-3.5 py-2.5 focus-within:border-(--color-primary)">
+              <User size={16} className="text-(--color-text-muted)" />
+              <input
+                id="name"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Charlene Reed"
+                className="w-full text-sm text-(--color-text-primary) outline-none placeholder:text-(--color-text-muted)"
+              />
+            </div>
+          </div>
+
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="email"
@@ -64,25 +85,26 @@ export function LoginForm() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="password"
-              className="text-sm text-(--color-text-secondary)"
+              className="text-sm text-[var(--color-text-secondary)]"
             >
               Password
             </label>
-            <div className="flex items-center gap-2 rounded-(--radius-input) border border-gray-200 px-3.5 py-2.5 focus-within:border-(--color-primary)">
-              <Lock size={16} className="text-(--color-text-muted)" />
+            <div className="flex items-center gap-2 rounded-[var(--radius-input)] border border-gray-200 px-3.5 py-2.5 focus-within:border-[var(--color-primary)]">
+              <Lock size={16} className="text-[var(--color-text-muted)]" />
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 required
+                minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full text-sm text-(--color-text-primary) outline-none placeholder:text-(--color-text-muted)"
+                className="w-full text-sm text-[var(--color-text-primary)] outline-none placeholder:text-[var(--color-text-muted)]"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="text-(--color-text-muted)"
+                className="text-[var(--color-text-muted)]"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -90,39 +112,21 @@ export function LoginForm() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center gap-2 text-(--color-text-secondary)">
-              <input
-                type="checkbox"
-                checked={remember}
-                onChange={(e) => setRemember(e.target.checked)}
-                className="h-4 w-4 rounded border-gray-300 accent-(--color-primary)"
-              />
-              Remember me
-            </label>
-            <Link
-              href="/forgot-password"
-              className="text-(--color-primary) hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
-
           <button
             type="submit"
-            className="mt-2 cursor-pointer rounded-(--radius-input) bg-(--color-primary) py-2.5 text-sm font-medium text-white hover:opacity-90"
+            className="mt-2 cursor-pointer rounded-[var(--radius-input)] bg-[var(--color-primary)] py-2.5 text-sm font-medium text-white hover:opacity-90"
           >
-            Sign in
+            Create account
           </button>
         </form>
 
-        <p className="mt-8 text-center text-sm text-(--color-text-secondary)">
-          Don&apos;t have an account?{" "}
+        <p className="mt-8 text-center text-sm text-[var(--color-text-secondary)]">
+          Already have an account?{" "}
           <Link
-            href="/signup"
-            className="font-medium text-(--color-primary) hover:underline"
+            href="/login"
+            className="font-medium text-[var(--color-primary)] hover:underline"
           >
-            Sign up
+            Sign in
           </Link>
         </p>
       </div>
