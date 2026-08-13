@@ -1,5 +1,15 @@
 import Image from "next/image";
-import { Search, Settings, Bell, Menu } from "lucide-react";
+import {
+  Search,
+  Settings,
+  Bell,
+  Menu,
+  ChevronDown,
+  LogOut,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 interface HeaderProps {
   title: string;
@@ -7,6 +17,19 @@ interface HeaderProps {
 }
 
 export function Header({ title, onMenuClick }: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <header className="bg-background">
       <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-6">
@@ -39,13 +62,42 @@ export function Header({ title, onMenuClick }: HeaderProps) {
             <Bell className="w-5 h-5 cursor-pointer" />
             <span className="absolute top-2.5 right-3 w-2 h-2 rounded-full bg-withdraw cursor-pointer" />
           </button>
-          <div className="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden relative">
-            <Image
-              src="https://i.pravatar.cc/150?img=47"
-              alt="User avatar"
-              fill
-              className="object-cover cursor-pointer"
-            />
+
+          <div ref={menuRef} className="relative">
+            <button
+              onClick={() => setIsMenuOpen((v) => !v)}
+              className="flex items-center gap-1.5"
+            >
+              <div className="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden relative">
+                <Image
+                  src="https://i.pravatar.cc/150?img=47"
+                  alt="User avatar"
+                  fill
+                  className="object-cover cursor-pointer"
+                />
+              </div>
+              <ChevronDown className="hidden md:block w-4 h-4 text-text-secondary" />
+            </button>
+
+            {isMenuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-48 rounded-input bg-surface shadow-card py-2 z-50">
+                <Link
+                  href="/setting"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-text-primary hover:bg-background"
+                >
+                  <Settings className="w-4 h-4" />
+                  Settings
+                </Link>
+                <button
+                  onClick={() => signOut({ callbackUrl: "/login" })}
+                  className="flex w-full items-center gap-2 px-4 py-2 text-sm text-withdraw hover:bg-background cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Log out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

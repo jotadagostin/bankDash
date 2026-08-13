@@ -21,7 +21,7 @@ export function SignUpForm() {
       <div className="mx-auto w-full max-w-sm">
         <div className="mb-10 flex items-center gap-2">
           <Image
-            src="/logo.png"
+            src="/logo-form.png"
             alt="BankDash"
             width={32}
             height={32}

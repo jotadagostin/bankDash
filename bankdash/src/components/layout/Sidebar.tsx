@@ -18,14 +18,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { label: "Dashboard", href: "/", icon: Home },
+  { label: "Dashboard", href: "/dashboard", icon: Home },
   { label: "Transactions", href: "/transactions", icon: Receipt },
   { label: "Account", href: "/accounts", icon: User },
   { label: "Investments", href: "/investments", icon: Landmark },
   { label: "Credit Cards", href: "/credit-cards", icon: CreditCard },
   { label: "Loans", href: "/loans", icon: Wallet },
   { label: "Services", href: "/services", icon: Wrench },
-  // { label: "My Privileges", href: "/privileges", icon: Shield },
   { label: "Setting", href: "/setting", icon: Settings },
 ];
 

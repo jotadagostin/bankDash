@@ -1,6 +1,6 @@
 export function AuthIllustration() {
   return (
-    <div className="relative hidden h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[var(--color-card-gradient-start)] to-[var(--color-card-gradient-end)] lg:flex">
+    <div className="relative hidden h-full w-full items-center justify-center overflow-hidden bg-linear-to-br from-(--color-card-gradient-start) to-(--color-card-gradient-end) lg:flex">
       <div className="absolute inset-0 opacity-10">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>

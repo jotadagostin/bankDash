@@ -1,19 +1,41 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 export function LoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: wire up to auth once backend is in place
+    setError(null);
+    setIsLoading(true);
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    setIsLoading(false);
+
+    if (result?.error) {
+      setError("Invalid email or password.");
+      return;
+    }
+
+    router.push("/dashboard");
+    router.refresh();
   }
 
   return (
@@ -90,6 +112,8 @@ export function LoginForm() {
             </div>
           </div>
 
+          {error && <p className="text-sm text-(--color-withdraw)">{error}</p>}
+
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center gap-2 text-(--color-text-secondary)">
               <input
@@ -110,9 +134,10 @@ export function LoginForm() {
 
           <button
             type="submit"
-            className="mt-2 cursor-pointer rounded-(--radius-input) bg-(--color-primary) py-2.5 text-sm font-medium text-white hover:opacity-90"
+            disabled={isLoading}
+            className="mt-2 rounded-(--radius-input) bg-(--color-primary) py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
           >
-            Sign in
+            {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
