@@ -1,19 +1,58 @@
 "use client";
 
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function SignUpForm() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: conectar ao endpoint de signup quando o backend estiver pronto
+    setError(null);
+    setIsLoading(true);
+
+    const response = await fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error ?? "Something went wrong.");
+      setIsLoading(false);
+      return;
+    }
+
+    //account created - automatic login:
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    setIsLoading(false);
+
+    if (result?.error) {
+      setError(
+        "Account created, but automatic sign-in failed. Please sign in manually.",
+      );
+      return;
+    }
+
+    router.push("/login");
+    router.refresh();
   }
 
   return (
@@ -85,12 +124,12 @@ export function SignUpForm() {
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="password"
-              className="text-sm text-[var(--color-text-secondary)]"
+              className="text-sm text-(--color-text-secondary)"
             >
               Password
             </label>
-            <div className="flex items-center gap-2 rounded-[var(--radius-input)] border border-gray-200 px-3.5 py-2.5 focus-within:border-[var(--color-primary)]">
-              <Lock size={16} className="text-[var(--color-text-muted)]" />
+            <div className="flex items-center gap-2 rounded-(--radius-input) border border-gray-200 px-3.5 py-2.5 focus-within:border-(--color-primary)">
+              <Lock size={16} className="text-(--color-text-muted)" />
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -99,12 +138,12 @@ export function SignUpForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full text-sm text-[var(--color-text-primary)] outline-none placeholder:text-[var(--color-text-muted)]"
+                className="w-full text-sm text-(--color-text-primary) outline-none placeholder:text-(--color-text-muted)"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="text-[var(--color-text-muted)]"
+                className="text-(--color-text-muted)"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -114,17 +153,17 @@ export function SignUpForm() {
 
           <button
             type="submit"
-            className="mt-2 cursor-pointer rounded-[var(--radius-input)] bg-[var(--color-primary)] py-2.5 text-sm font-medium text-white hover:opacity-90"
+            className="mt-2 cursor-pointer rounded-(--radius-input) bg-(--color-primary) py-2.5 text-sm font-medium text-white hover:opacity-90"
           >
             Create account
           </button>
         </form>
 
-        <p className="mt-8 text-center text-sm text-[var(--color-text-secondary)]">
+        <p className="mt-8 text-center text-sm text-(--color-text-secondary)">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-medium text-[var(--color-primary)] hover:underline"
+            className="font-medium text-(--color-primary) hover:underline"
           >
             Sign in
           </Link>
