@@ -15,6 +15,9 @@ const config: Config = {
     "src/core/**/*.ts",
     "src/infra/**/*.ts",
     "!src/**/*.d.ts",
+    "!src/core/domain/**/*.entity.ts",
+    "!src/core/domain/**/*.repository.ts",
+    "!src/core/domain/**/password-hasher.ts",
   ],
 };
 
