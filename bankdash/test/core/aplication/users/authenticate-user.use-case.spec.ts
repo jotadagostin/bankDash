@@ -27,7 +27,7 @@ describe("AuthenticateUserUseCase", () => {
     useCase = new AuthenticateUserUseCase(users, hasher);
   });
 
-  it("The user must be returned without a hash when the credentials are valid.", async () => {
+  it("should return the user without the hash when the credentials are valid", async () => {
     findByEmail.mockResolvedValue(user);
     compare.mockResolvedValue(true);
 
@@ -46,7 +46,7 @@ describe("AuthenticateUserUseCase", () => {
     expect(result).not.toHaveProperty("passwordHash");
   });
 
-  it("You should save e-mail spaces before searching.", async () => {
+  it("should trim the e-mail before searching", async () => {
     findByEmail.mockResolvedValue(user);
     compare.mockResolvedValue(true);
 
@@ -58,17 +58,17 @@ describe("AuthenticateUserUseCase", () => {
     expect(findByEmail).toHaveBeenCalledWith("joao@example.com");
   });
 
-  it("must fail when the user does not exist", async () => {
-    findByEmail.mockResolvedValue(user);
+  it("should fail when the user does not exist", async () => {
+    findByEmail.mockResolvedValue(null);
 
     await expect(
       useCase.execute({ email: "x@example.com", password: "123456" }),
     ).rejects.toThrow("INVALID_CREDENTIALS");
+
+    expect(compare).not.toHaveBeenCalled();
   });
 
-  expect(compare).not.toHaveBeenCalled();
-
-  it("must be fail when the password is wrong", async () => {
+  it("should fail when the password is wrong", async () => {
     findByEmail.mockResolvedValue(user);
     compare.mockResolvedValue(false);
 
