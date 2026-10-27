@@ -75,7 +75,7 @@ export function TransactionsTable() {
                 <th className="font-medium px-6 py-4">Transaction ID</th>
                 <th className="font-medium px-6 py-4">Type</th>
                 <th className="font-medium px-6 py-4">Card</th>
-                <th className="font-medium px-6 py-4">Amount</th>
+                <th className="font-medium px-6 py-4">Date</th>
                 <th className="font-medium px-6 py-4">Amount</th>
                 <th className="font-medium px-6 py-4">Receipt</th>
               </tr>
