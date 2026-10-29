@@ -1,43 +1,32 @@
-import { and, count, desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
-import {
-  FindTransactionsParams,
-  FindTransactionsResult,
-  TransactionRepository,
-} from "@/core/domain/transactions/transaction.repository";
+import { User } from "@/core/domain/users/user.entity";
+import { UserRepository } from "@/core/domain/users/user.repository";
 import { db } from "@/lib/db";
-import { transactions } from "@/lib/db/schema";
+import { users } from "@/lib/db/schema";
 
 type Database = typeof db;
 
-export class DrizzleTransactionRepository implements TransactionRepository {
+export class DrizzleUserRepository implements UserRepository {
   constructor(private readonly database: Database) {}
 
-  async findByUser({
-    userId,
-    filter,
-    limit,
-    offset,
-  }: FindTransactionsParams): Promise<FindTransactionsResult> {
-    const where =
-      filter === "all"
-        ? eq(transactions.userId, userId)
-        : and(
-            eq(transactions.userId, userId),
-            eq(transactions.direction, filter),
-          );
+  async findByEmail(email: string): Promise<User | null> {
+    const [user] = await this.database
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
-    const [items, [{ total }]] = await Promise.all([
-      this.database
-        .select()
-        .from(transactions)
-        .where(where)
-        .orderBy(desc(transactions.occurredAt), desc(transactions.id))
-        .limit(limit)
-        .offset(offset),
-      this.database.select({ total: count() }).from(transactions).where(where),
-    ]);
+    return user ?? null;
+  }
 
-    return { items, total };
+  async findById(id: string): Promise<User | null> {
+    const [user] = await this.database
+      .select()
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1);
+
+    return user ?? null;
   }
 }

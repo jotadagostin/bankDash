@@ -1,5 +1,5 @@
-import { DrizzleUserRepository } from "@/infra/repository/drizzle-user.repository";
 import { users } from "@/lib/db/schema";
+import { DrizzleUserRepository } from "@/infra/repository/drizzle-user.repository";
 
 jest.mock("@/lib/db", () => ({ db: {} }));
 
