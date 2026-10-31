@@ -43,6 +43,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    session({ session, token }) {
+      // Com a estratégia jwt, token.sub é o id do usuário.
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },
