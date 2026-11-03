@@ -21,38 +21,41 @@ export function SignUpForm() {
     setError(null);
     setIsLoading(true);
 
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json().catch(() => null);
 
-    if (!response.ok) {
-      setError(data.error ?? "Something went wrong.");
+      if (!response.ok) {
+        setError(data?.error ?? "Something went wrong.");
+        return;
+      }
+
+      // account created - automatic login:
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(
+          "Account created, but automatic sign-in failed. Please sign in manually.",
+        );
+        return;
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    //account created - automatic login:
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-
-    setIsLoading(false);
-
-    if (result?.error) {
-      setError(
-        "Account created, but automatic sign-in failed. Please sign in manually.",
-      );
-      return;
-    }
-
-    router.push("/login");
-    router.refresh();
   }
 
   return (
@@ -151,11 +154,14 @@ export function SignUpForm() {
             </div>
           </div>
 
+          {error && <p className="text-sm text-(--color-withdraw)">{error}</p>}
+
           <button
             type="submit"
-            className="mt-2 cursor-pointer rounded-(--radius-input) bg-(--color-primary) py-2.5 text-sm font-medium text-white hover:opacity-90"
+            disabled={isLoading}
+            className="mt-2 cursor-pointer rounded-(--radius-input) bg-(--color-primary) py-2.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
           >
-            Create account
+            {isLoading ? "Creating account..." : "Create account"}
           </button>
         </form>
 

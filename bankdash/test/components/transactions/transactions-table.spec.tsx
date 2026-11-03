@@ -3,38 +3,40 @@ import userEvent from "@testing-library/user-event";
 import { NuqsTestingAdapter } from "nuqs/adapters/testing";
 
 import { TransactionsTable } from "@/components/transactions/TransactionsTable";
+import type { FilterOption } from "@/components/transactions/transactions-filters";
+import type { DetailedTransaction } from "@/types";
 
-// 12 transactions: 1-7 income, 8-12 expense (PAGE_SIZE = 5)
-jest.mock("@/data/mock-data", () => ({
-  detailedTransactions: Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    description: `Transaction ${i + 1}`,
-    transactionId: `#TX${i + 1}`,
+function makeTransaction(
+  n: number,
+  direction: "income" | "expense" = "income",
+): DetailedTransaction {
+  return {
+    id: `t${n}`,
+    description: `Transaction ${n}`,
+    transactionId: `#TX${n}`,
     category: "Shopping",
-    date: "28 Jan, 12.30 AM",
-    direction: i < 7 ? "income" : "expense",
-    amount: 100 + i,
-  })),
-}));
-
-jest.mock("@/lib/utils", () => ({
-  formatCurrency: (value: number) => `$${value}`,
-}));
-
-function range(from: number, to: number) {
-  return Array.from(
-    { length: to - from + 1 },
-    (_, i) => `Transaction ${from + i}`,
-  );
+    cardLast4: "1234",
+    date: "28 Jan, 12:30 AM",
+    amount: direction === "income" ? n * 100 : -n * 100,
+    direction,
+  };
 }
 
-function visibleDescriptions() {
-  return screen
-    .getAllByText(/^Transaction \d+$/)
-    .map((element) => element.textContent);
-}
+type RenderOptions = {
+  transactions?: DetailedTransaction[];
+  filter?: FilterOption;
+  page?: number;
+  totalPages?: number;
+  searchParams?: string;
+};
 
-function renderTable(searchParams = "") {
+function renderTable({
+  transactions = [makeTransaction(1), makeTransaction(2, "expense")],
+  filter = "all",
+  page = 1,
+  totalPages = 3,
+  searchParams = "",
+}: RenderOptions = {}) {
   const onUrlUpdate = jest.fn();
 
   render(
@@ -43,7 +45,12 @@ function renderTable(searchParams = "") {
       onUrlUpdate={onUrlUpdate}
       hasMemory
     >
-      <TransactionsTable />
+      <TransactionsTable
+        transactions={transactions}
+        filter={filter}
+        page={page}
+        totalPages={totalPages}
+      />
     </NuqsTestingAdapter>,
   );
 
@@ -78,132 +85,142 @@ describe("TransactionsTable", () => {
     ]);
   });
 
-  it("should show the first page of all transactions by default", () => {
-    renderTable();
+  it("should render the transaction fields", () => {
+    renderTable({ transactions: [makeTransaction(1)] });
 
-    expect(visibleDescriptions()).toEqual(range(1, 5));
+    expect(screen.getByText("Transaction 1")).toBeInTheDocument();
+    expect(screen.getByText("#TX1")).toBeInTheDocument();
+    expect(screen.getByText("Shopping")).toBeInTheDocument();
+    expect(screen.getByText("1234 ***")).toBeInTheDocument();
+    expect(screen.getByText("28 Jan, 12:30 AM")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "All Transactions" }),
-    ).toHaveClass("text-primary");
+      screen.getByRole("button", { name: "Download" }),
+    ).toBeInTheDocument();
+  });
+
+  it("should format the amounts and color them by direction", () => {
+    renderTable({
+      transactions: [makeTransaction(1), makeTransaction(2, "expense")],
+    });
+
+    expect(screen.getByText("+$100")).toHaveClass("text-deposit");
+    expect(screen.getByText("-$200")).toHaveClass("text-withdraw");
+  });
+
+  it("should render only the header row when there are no transactions", () => {
+    renderTable({ transactions: [], totalPages: 1 });
+
+    expect(screen.getAllByRole("row")).toHaveLength(1);
+    expect(screen.queryByText(/^Transaction \d+$/)).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ["all", "All Transactions"],
+    ["income", "Income"],
+    ["expense", "Expense"],
+  ] as const)(
+    "should highlight the active tab when the filter is %s",
+    (filter, label) => {
+      renderTable({ filter });
+
+      expect(screen.getByRole("button", { name: label })).toHaveClass(
+        "text-primary",
+      );
+    },
+  );
+
+  it("should render one button per page and highlight the current one", () => {
+    renderTable({ page: 2, totalPages: 3 });
+
+    expect(screen.getByRole("button", { name: "1" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "2" })).toHaveClass("bg-primary");
     expect(screen.getByRole("button", { name: "3" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "4" })).not.toBeInTheDocument();
   });
 
-  it("should format the amounts and color them by direction", () => {
-    renderTable();
+  it("should disable Previous on the first page", () => {
+    renderTable({ page: 1, totalPages: 3 });
 
-    expect(screen.getByText("$100")).toHaveClass("text-deposit");
-
-    // transaction 8 is the first expense, so it is on page 2
-    expect(screen.queryByText("$107")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Previous" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
   });
 
-  it("should color expense amounts as withdraw", async () => {
-    const user = userEvent.setup();
-    renderTable();
+  it("should disable Next on the last page", () => {
+    renderTable({ page: 3, totalPages: 3 });
 
-    await user.click(screen.getByRole("button", { name: "Expense" }));
-
-    expect(await screen.findByText("$107")).toHaveClass("text-withdraw");
+    expect(screen.getByRole("button", { name: "Previous" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
   });
 
-  it("should filter by income", async () => {
+  it("should disable both navigation buttons when there is a single page", () => {
+    renderTable({ page: 1, totalPages: 1 });
+
+    expect(screen.getByRole("button", { name: "Previous" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
+  });
+
+  it("should update the filter in the URL when a tab is clicked", async () => {
     const user = userEvent.setup();
     const { onUrlUpdate } = renderTable();
 
     await user.click(screen.getByRole("button", { name: "Income" }));
 
-    await waitFor(() => expect(visibleDescriptions()).toEqual(range(1, 5)));
-    expect(screen.getByRole("button", { name: "Income" })).toHaveClass(
-      "text-primary",
-    );
-    expect(screen.getByRole("button", { name: "2" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "3" })).not.toBeInTheDocument();
     await waitFor(() =>
       expect(lastQueryString(onUrlUpdate)).toContain("filter=income"),
     );
   });
 
-  it("should filter by expense and disable both navigation buttons", async () => {
+  it("should go back to the first page when the filter changes", async () => {
     const user = userEvent.setup();
-    renderTable();
+    const { onUrlUpdate } = renderTable({ page: 2, searchParams: "?page=2" });
 
     await user.click(screen.getByRole("button", { name: "Expense" }));
 
-    await waitFor(() => expect(visibleDescriptions()).toEqual(range(8, 12)));
-    expect(screen.getByRole("button", { name: "Previous" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
-  });
-
-  it("should navigate with the page numbers", async () => {
-    const user = userEvent.setup();
-    const { onUrlUpdate } = renderTable();
-
-    await user.click(screen.getByRole("button", { name: "2" }));
-
-    await waitFor(() => expect(visibleDescriptions()).toEqual(range(6, 10)));
-    expect(screen.getByRole("button", { name: "2" })).toHaveClass("bg-primary");
-    await waitFor(() =>
-      expect(lastQueryString(onUrlUpdate)).toContain("page=2"),
-    );
-  });
-
-  it("should navigate with Previous and Next", async () => {
-    const user = userEvent.setup();
-    renderTable();
-
-    expect(screen.getByRole("button", { name: "Previous" })).toBeDisabled();
-
-    await user.click(screen.getByRole("button", { name: "Next" }));
-    await waitFor(() => expect(visibleDescriptions()).toEqual(range(6, 10)));
-
-    await user.click(screen.getByRole("button", { name: "Next" }));
-    await waitFor(() => expect(visibleDescriptions()).toEqual(range(11, 12)));
-    expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
-
-    await user.click(screen.getByRole("button", { name: "Previous" }));
-    await waitFor(() => expect(visibleDescriptions()).toEqual(range(6, 10)));
-  });
-
-  it("should go back to the first page when the filter changes", async () => {
-    const user = userEvent.setup();
-    const { onUrlUpdate } = renderTable("?page=2");
-
-    expect(visibleDescriptions()).toEqual(range(6, 10));
-
-    await user.click(screen.getByRole("button", { name: "Income" }));
-
-    await waitFor(() => expect(visibleDescriptions()).toEqual(range(1, 5)));
     await waitFor(() => {
       const queryString = lastQueryString(onUrlUpdate);
-      expect(queryString).toContain("filter=income");
+      expect(queryString).toContain("filter=expense");
       expect(queryString).not.toContain("page=");
     });
   });
 
-  it("should read the filter and the page from the URL", () => {
-    renderTable("?filter=income&page=2");
+  it("should update the page in the URL when a page number is clicked", async () => {
+    const user = userEvent.setup();
+    const { onUrlUpdate } = renderTable({ page: 1, totalPages: 3 });
 
-    expect(visibleDescriptions()).toEqual(range(6, 7));
-    expect(screen.getByRole("button", { name: "Income" })).toHaveClass(
-      "text-primary",
+    await user.click(screen.getByRole("button", { name: "3" }));
+
+    await waitFor(() =>
+      expect(lastQueryString(onUrlUpdate)).toContain("page=3"),
     );
   });
 
-  it("should clamp a page beyond the last one to the last page", () => {
-    renderTable("?page=99");
+  it("should go to the next page when Next is clicked", async () => {
+    const user = userEvent.setup();
+    const { onUrlUpdate } = renderTable({
+      page: 2,
+      totalPages: 3,
+      searchParams: "?page=2",
+    });
 
-    expect(visibleDescriptions()).toEqual(range(11, 12));
-    expect(screen.getByRole("button", { name: "3" })).toHaveClass("bg-primary");
-    expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    await waitFor(() =>
+      expect(lastQueryString(onUrlUpdate)).toContain("page=3"),
+    );
   });
 
-  it("should fall back to all transactions when the filter in the URL is invalid", () => {
-    renderTable("?filter=banana");
+  it("should go to the previous page when Previous is clicked", async () => {
+    const user = userEvent.setup();
+    const { onUrlUpdate } = renderTable({
+      page: 3,
+      totalPages: 3,
+      searchParams: "?page=3",
+    });
 
-    expect(visibleDescriptions()).toEqual(range(1, 5));
-    expect(
-      screen.getByRole("button", { name: "All Transactions" }),
-    ).toHaveClass("text-primary");
+    await user.click(screen.getByRole("button", { name: "Previous" }));
+
+    await waitFor(() =>
+      expect(lastQueryString(onUrlUpdate)).toContain("page=2"),
+    );
   });
 });

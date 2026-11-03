@@ -1,39 +1,46 @@
 "use client";
 
-import { detailedTransactions } from "@/data/mock-data";
+import {
+  filterOptions,
+  type FilterOption,
+} from "@/components/transactions/transactions-filters";
 import { formatCurrency } from "@/lib/utils";
+import type { DetailedTransaction } from "@/types";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { parseAsInteger, parseAsStringLiteral, useQueryState } from "nuqs";
 
-const filterOptions = ["all", "income", "expense"] as const;
-const PAGE_SIZE = 5;
-
-const tabs: { value: (typeof filterOptions)[number]; label: string }[] = [
+const tabs: { value: FilterOption; label: string }[] = [
   { value: "all", label: "All Transactions" },
   { value: "income", label: "Income" },
   { value: "expense", label: "Expense" },
 ];
 
-export function TransactionsTable() {
-  const [filter, setFilter] = useQueryState(
+type TransactionsTableProps = {
+  transactions: DetailedTransaction[];
+  filter: FilterOption;
+  page: number;
+  totalPages: number;
+};
+
+export function TransactionsTable({
+  transactions,
+  filter,
+  page,
+  totalPages,
+}: TransactionsTableProps) {
+  // shallow: false faz o servidor buscar os dados de novo a cada mudança na URL.
+  const [, setFilter] = useQueryState(
     "filter",
-    parseAsStringLiteral(filterOptions).withDefault("all"),
+    parseAsStringLiteral(filterOptions)
+      .withDefault("all")
+      .withOptions({ shallow: false }),
   );
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-
-  const filtered =
-    filter === "all"
-      ? detailedTransactions
-      : detailedTransactions.filter((t) => t.direction === filter);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const paginated = filtered.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
+  const [, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ shallow: false }),
   );
 
-  function handleFilterChange(value: (typeof filterOptions)[number]) {
+  function handleFilterChange(value: FilterOption) {
     setFilter(value);
     setPage(1); // volta pra primeira página sempre que o filtro muda
   }
@@ -81,7 +88,7 @@ export function TransactionsTable() {
               </tr>
             </thead>
             <tbody>
-              {paginated.map((transaction) => (
+              {transactions.map((transaction) => (
                 <tr
                   key={transaction.id}
                   className="border-t border-black/5 text-sm"
@@ -112,7 +119,9 @@ export function TransactionsTable() {
                   <td className="px-4 py-4 text-text-secondary">
                     {transaction.category}
                   </td>
-                  <td className="px-4 py-4 text-text-secondary">1234 ***</td>
+                  <td className="px-4 py-4 text-text-secondary">
+                    {transaction.cardLast4} ***
+                  </td>
                   <td className="px-4 py-4 text-text-secondary">
                     {transaction.date}
                   </td>
@@ -143,8 +152,8 @@ export function TransactionsTable() {
         <div className="flex items-center justify-center gap-2 px-6 py-5">
           <button
             type="button"
-            disabled={currentPage === 1}
-            onClick={() => setPage(currentPage - 1)}
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
             className="text-sm text-text-secondary disabled:opacity-40 disabled:cursor-not-allowed px-2 cursor-pointer"
           >
             Previous
@@ -156,7 +165,7 @@ export function TransactionsTable() {
               type="button"
               onClick={() => setPage(p)}
               className={`w-8 h-8 rounded-md cursor-pointer text-sm font-medium transition-colors ${
-                p === currentPage
+                p === page
                   ? "bg-primary text-white"
                   : "text-text-secondary hover:bg-primary-light"
               }`}
@@ -167,8 +176,8 @@ export function TransactionsTable() {
 
           <button
             type="button"
-            disabled={currentPage === totalPages}
-            onClick={() => setPage(currentPage + 1)}
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
             className="text-sm text-text-secondary disabled:opacity-40 disabled:cursor-not-allowed px-2 cursor-pointer"
           >
             Next

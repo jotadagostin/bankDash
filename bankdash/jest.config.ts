@@ -14,6 +14,7 @@ const config: Config = {
   collectCoverageFrom: [
     "src/core/**/*.ts",
     "src/infra/**/*.ts",
+    "src/lib/to-detailed-transaction.ts",
     "src/components/auth/**/*.tsx",
     "src/components/transactions/TransactionsTable.tsx",
     "!src/**/*.d.ts",
