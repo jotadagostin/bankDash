@@ -1,7 +1,10 @@
 import { eq } from "drizzle-orm";
 
 import { User } from "@/core/domain/users/user.entity";
-import { UserRepository } from "@/core/domain/users/user.repository";
+import {
+  CreateUserData,
+  UserRepository,
+} from "@/core/domain/users/user.repository";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 
@@ -28,5 +31,18 @@ export class DrizzleUserRepository implements UserRepository {
       .limit(1);
 
     return user ?? null;
+  }
+
+  async create(data: CreateUserData): Promise<User> {
+    const [user] = await this.database
+      .insert(users)
+      .values({
+        name: data.name,
+        email: data.email,
+        passwordHash: data.passwordHash,
+      })
+      .returning();
+
+    return user;
   }
 }

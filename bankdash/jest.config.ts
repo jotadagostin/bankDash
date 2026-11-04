@@ -15,6 +15,7 @@ const config: Config = {
     "src/core/**/*.ts",
     "src/infra/**/*.ts",
     "src/lib/to-detailed-transaction.ts",
+    "src/app/api/signup/route.ts",
     "src/components/auth/**/*.tsx",
     "src/components/transactions/TransactionsTable.tsx",
     "!src/**/*.d.ts",
