@@ -8,9 +8,11 @@ jest.mock("@/lib/db", () => ({ db: {} }));
 
 const mockExecute = jest.fn();
 
+// A rota cria o use case no momento do import, antes de "mockExecute" existir.
+// Por isso o mock só lê "mockExecute" quando "execute" é chamado.
 jest.mock("@/core/application/users/register-user.use-case", () => ({
   RegisterUserUseCase: jest.fn().mockImplementation(() => ({
-    execute: mockExecute,
+    execute: (...args: unknown[]) => mockExecute(...args),
   })),
 }));
 
