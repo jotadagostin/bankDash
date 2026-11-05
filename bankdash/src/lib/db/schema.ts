@@ -48,3 +48,14 @@ export const transactions = pgTable(
     index("transactions_user_occurred_idx").on(table.userId, table.occurredAt),
   ],
 );
+
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  tokenHash: text("token_hash").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  usedAt: timestamp("used_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

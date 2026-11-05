@@ -45,4 +45,14 @@ export class DrizzleUserRepository implements UserRepository {
 
     return user;
   }
+
+  async updatePasswordHash(
+    userId: string,
+    passwordHash: string,
+  ): Promise<void> {
+    await this.database
+      .update(users)
+      .set({ passwordHash })
+      .where(eq(users.id, userId));
+  }
 }

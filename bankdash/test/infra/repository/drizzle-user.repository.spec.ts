@@ -21,7 +21,12 @@ describe("DrizzleUserRepository", () => {
   const values = jest.fn(() => ({ returning }));
   const insert = jest.fn(() => ({ values }));
 
-  const database = { select, insert } as unknown as Database;
+  // update().set().where()
+  const updateWhere = jest.fn();
+  const set = jest.fn(() => ({ where: updateWhere }));
+  const update = jest.fn(() => ({ set }));
+
+  const database = { select, insert, update } as unknown as Database;
   const repository = new DrizzleUserRepository(database);
 
   const row = {
@@ -36,11 +41,14 @@ describe("DrizzleUserRepository", () => {
   beforeEach(() => {
     limit.mockReset();
     returning.mockReset();
+    updateWhere.mockReset();
     where.mockClear();
     from.mockClear();
     select.mockClear();
     values.mockClear();
     insert.mockClear();
+    set.mockClear();
+    update.mockClear();
   });
 
   describe("findByEmail", () => {
@@ -103,6 +111,20 @@ describe("DrizzleUserRepository", () => {
       });
       expect(returning).toHaveBeenCalledTimes(1);
       expect(result).toEqual(row);
+    });
+  });
+
+  describe("updatePasswordHash", () => {
+    it("should update only the password hash of the given user", async () => {
+      updateWhere.mockResolvedValue(undefined);
+
+      await expect(
+        repository.updatePasswordHash("u1", "new-hash"),
+      ).resolves.toBeUndefined();
+
+      expect(update).toHaveBeenCalledWith(users);
+      expect(set).toHaveBeenCalledWith({ passwordHash: "new-hash" });
+      expect(updateWhere).toHaveBeenCalledTimes(1);
     });
   });
 });
