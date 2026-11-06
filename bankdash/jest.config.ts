@@ -20,9 +20,9 @@ const config: Config = {
     "src/components/transactions/TransactionsTable.tsx",
     "!src/**/*.d.ts",
     "!src/components/auth/AuthIllustration.tsx",
-    "!src/core/domain/**/*.entity.ts",
-    "!src/core/domain/**/*.repository.ts",
-    "!src/core/domain/**/password-hasher.ts",
+    // O domínio só tem tipos e interfaces por enquanto. Se ganhar regras
+    // de negócio dentro das entities, tira esta linha.
+    "!src/core/domain/**",
   ],
 };
 
